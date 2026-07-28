@@ -18,19 +18,18 @@ This project focuses on analyzing sales performance, customer trends, product ca
 
 ## 🔍 Key Business Questions Addressed
 
-```sql
 -------------------------------------------------------------------------------
 -- PROJECT: SQL Business Data Analysis (Ladder Challenge)
 -- DATABASE: PostgreSQL
 -------------------------------------------------------------------------------
 -- 1. Question: Calculate the total Sales for each year based on OrderDate.
+```sql
 SELECT DATE_TRUNC('year', order_date::timestamp) AS year, SUM(sales)
 FROM public.orders
 GROUP BY 1
 ORDER BY 1 ASC;
-
-<img width="1008" height="421" alt="Screenshot 2026-07-28 235353" src="https://github.com/user-attachments/assets/5832b46a-3100-48ec-9ef8-758fc4ede53c" />
-
+```
+<img width="1008" height="421" alt="Screenshot 2026-07-28 235353" src="https://github.com/user-attachments/assets/1fab0d57-1087-41d6-bd98-ee032ecd4ff5" />
 
 
 -- 2. Question: What is the average Profit for each month (regardless of year) based on OrderDate?

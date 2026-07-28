@@ -32,7 +32,6 @@ This project focuses on analyzing sales performance, customer trends, product ca
 ---
 
 ## 📂 Repository Structure
-## 📂 Repository Structure
 
 ```text
 ├── analytical_queries.sql    # Fully formatted and debugged PostgreSQL queries

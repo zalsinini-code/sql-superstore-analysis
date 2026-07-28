@@ -18,23 +18,101 @@ This project focuses on analyzing sales performance, customer trends, product ca
 
 ## 🔍 Key Business Questions Addressed
 
-1. **Annual Sales Trend:** Aggregating total revenue year-over-year.
-2. **Monthly Profitability Pattern:** Evaluating average profit per month to identify seasonal performance.
-3. **Quarterly Product Demand:** Tracking total units sold across year-and-quarter intervals.
-4. **Category Sales by Month:** Monitoring monthly sales breakdown by product categories.
-5. **Customer Engagement by Day:** Analyzing distinct customer order activity per day of the week.
-6. **Technology Sector Profit:** Measuring total profit generated strictly by Technology products per year.
-7. **Regional Performance (South):** Quarterly sales breakdown specifically for the Southern sub-region.
-8. **Targeted Date Filtering:** Extracting transactional details for specific timeframe windows (e.g., March 2023).
-9. **Sunday Shopping Behavior:** Identifying customer ordering patterns specifically on Sundays.
-10. **H1 Performance Analysis:** Analyzing product-level sales generated during the first half of the year (Q1 & Q2).
+```sql
+-------------------------------------------------------------------------------
+-- PROJECT: SQL Business Data Analysis (Ladder Challenge)
+-- DATABASE: PostgreSQL
+-------------------------------------------------------------------------------
+-- 1. Question: Calculate the total Sales for each year based on OrderDate.
+SELECT DATE_TRUNC('year', order_date::timestamp) AS year, SUM(sales)
+FROM public.orders
+GROUP BY 1
+ORDER BY 1 ASC;
+
+<img width="1008" height="421" alt="Screenshot 2026-07-28 235353" src="https://github.com/user-attachments/assets/5832b46a-3100-48ec-9ef8-758fc4ede53c" />
+
+
+
+-- 2. Question: What is the average Profit for each month (regardless of year) based on OrderDate?
+SELECT EXTRACT(month FROM order_date::timestamp) AS Month, AVG(profit) AS avg_profit
+FROM public.orders
+GROUP BY 1;
+
+-- 3. Question: Find the total Quantity of products sold for each quarter of the year based on OrderDate.
+SELECT DATE_TRUNC('quarter', order_date::timestamp) AS Quarter, SUM(quantity) AS total_quantity
+FROM public.orders
+GROUP BY 1;
+
+-- 4. Question: List the Category and the total Sales for each month-year combination based on OrderDate.
+SELECT 
+    DATE_TRUNC('quarter', order_date::timestamp) AS year_quarter, 
+    SUM(profit) AS total_profit
+FROM public.orders
+GROUP BY 1
+ORDER BY 1;
+
+-- 5. Question: What is the number of distinct Customers who placed orders in each day of the week (e.g., Monday, Tuesday, etc.)?
+SELECT 
+    EXTRACT(month FROM order_date::timestamp) AS month, 
+    AVG(discount) AS avg_discount
+FROM public.orders
+GROUP BY 1
+ORDER BY 1;
+
+-- 6. Question: Calculate the total Profit from 'Technology' products for each year they were ordered.
+SELECT 
+    TO_CHAR(order_date::timestamp, 'Day') AS day_of_week, 
+    SUM(sales) AS total_sales
+FROM public.orders
+GROUP BY 1, EXTRACT(dow FROM order_date::timestamp)
+ORDER BY EXTRACT(dow FROM order_date::timestamp);
+
+-- 7. Question: Show the total Sales for each quarter of the OrderDate in the 'South' Region.
+SELECT 
+    EXTRACT(year FROM order_date::timestamp) AS year, 
+    COUNT(DISTINCT order_id) AS total_orders
+FROM public.orders
+GROUP BY 1
+ORDER BY 1;
+-- 8. Question: Retrieve all orders (OrderID, OrderDate) that were placed in March 2023.
+WITH MonthlySales AS (
+    SELECT 
+        EXTRACT(year FROM order_date::timestamp) AS year,
+        EXTRACT(month FROM order_date::timestamp) AS month,
+        SUM(sales) AS total_sales,
+        RANK() OVER (
+            PARTITION BY EXTRACT(year FROM order_date::timestamp) 
+            ORDER BY SUM(sales) DESC
+        ) AS rnk
+    FROM public.orders
+    GROUP BY 1, 2
+)
+SELECT year, month, total_sales
+FROM MonthlySales
+WHERE rnk = 1;
+
+-- 9. Question: List all CustomerName and their OrderDate for orders placed on a Sunday.
+SELECT 
+    order_id, 
+    order_date, 
+    ship_date, 
+    (ship_date::date - order_date::date) AS days_to_ship
+FROM public.orders;
+
+-- 10. Question: Find the ProductName and Sales for all products that were ordered in the first half of any year (January to June).
+SELECT 
+    EXTRACT(year FROM order_date::timestamp) AS year, 
+    (SUM(profit) / NULLIF(SUM(sales), 0)) * 100 AS profit_margin_percentage
+FROM public.orders
+GROUP BY 1
+ORDER BY 1;
 
 ---
 
 ## 📂 Repository Structure
 
 ```text
-├── analytical_queries.sql    # Fully formatted and debugged PostgreSQL queries
+├── superstore_analysis_queries.sql    # Fully formatted and debugged PostgreSQL queries
 └── README.md                 # Project documentation and summary
 ```
 
@@ -43,4 +121,4 @@ This project focuses on analyzing sales performance, customer trends, product ca
 ## 🚀 How to Run the Queries
 1. Open your PostgreSQL environment (e.g., **pgAdmin** or **DBeaver**).
 2. Connect to the database containing the `orders`, `products`, `customers`, and `regions` tables.
-3. Execute `analytical_queries.sql` to run the analysis and reproduce the key metrics.
+3. Execute `superstore_analysis_queries.sql` to run the analysis and reproduce the key metrics.

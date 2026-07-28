@@ -1,2 +1,2 @@
 # sql-business-data-analysis
-Developed advanced SQL queries to clean, transform, and analyze relational datasets for business insights.
+Advanced SQL analysis project focused on cleaning, transforming, and analyzing relational datasets to generate business insights.

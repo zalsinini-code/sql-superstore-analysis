@@ -148,8 +148,11 @@ ORDER BY 1;
 ## 📂 Repository Structure
 
 ```text
-├── superstore_analysis_queries.sql    # Fully formatted and debugged PostgreSQL queries
-└── README.md                 # Project documentation and summary
+├── README.md
+├── scripts/
+│   └── superstore_analysis.sql   # Complete SQL queries
+└── data_outputs/
+    └── annual_sales.csv          # Exported CSV query results
 ```
 
 ---

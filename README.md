@@ -152,7 +152,7 @@ ORDER BY 1;
 ├── scripts/
 │   └── superstore_analysis.sql   # Complete SQL queries
 └── data_outputs/
-    └── annual_sales.csv          # Exported CSV query results
+    └── superstore_dataset.zip          # Exported CSV query results
 ```
 
 ---

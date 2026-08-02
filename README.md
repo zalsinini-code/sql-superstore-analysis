@@ -148,11 +148,11 @@ ORDER BY 1;
 ## 📂 Repository Structure
 
 ```text
-├── README.md
 ├── scripts/
 │   └── superstore_analysis.sql   # Complete SQL queries
 └── data_outputs/
-    └── superstore_dataset.zip          # Exported CSV query results
+│    └── superstore_dataset.zip          # Exported CSV query results
+└── README.md
 ```
 
 ---

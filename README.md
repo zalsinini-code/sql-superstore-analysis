@@ -150,8 +150,8 @@ ORDER BY 1;
 ```text
 ├── scripts/
 │   └── superstore_analysis.sql   # Complete SQL queries
-└── data_outputs/
-│    └── superstore_dataset.zip          # Exported CSV query results
+├── data_outputs/
+│   └── superstore_dataset.zip          # Exported CSV query results
 └── README.md
 ```
 
